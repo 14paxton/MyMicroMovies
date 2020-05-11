@@ -1,4 +1,4 @@
-package micronaut;
+package movies;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 
 @Controller("/movies")
-public class HelloController {
+public class MoviesController {
 
     @Produces(MediaType.TEXT_PLAIN)
     @Get("/{name}")
@@ -16,3 +16,4 @@ public class HelloController {
     }
 
 }
+
