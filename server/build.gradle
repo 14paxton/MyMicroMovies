@@ -2,6 +2,7 @@ plugins {
     id "groovy"
     id "com.github.johnrengelman.shadow" version "5.2.0"
     id "application"
+
 }
 
 
@@ -12,6 +13,7 @@ group "movies"
 repositories {
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
+    maven { url "https://repo.grails.org/grails/core" }
 }
 
 configurations {
@@ -24,10 +26,15 @@ dependencies {
     compileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
     compileOnly "io.micronaut:micronaut-inject-groovy"
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut.configuration:micronaut-mongo-reactive:$micronautMongoVersion"
     implementation "io.micronaut:micronaut-runtime-groovy"
     implementation "io.micronaut:micronaut-validation"
-    implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut:micronaut-http-client"
+    implementation("io.micronaut.configuration:micronaut-mongo-gorm") {
+        exclude(group: "org.grails", module: 'grails-datastore-core')
+    }
+    implementation "org.grails:grails-datastore-core:7.0.5.BUILD-SNAPSHOT"
+    implementation "io.micronaut:micronaut-http-server-netty"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     testCompileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
@@ -37,6 +44,16 @@ dependencies {
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut.test:micronaut-test-spock"
     testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.1"
+
+    testImplementation "io.micronaut:micronaut-function-web"
+    testImplementation "org.testcontainers:spock:1.13.0"
+    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.1"
+    testRuntimeOnly "io.netty:netty-handler"
+
+    testCompile "org.testcontainers:testcontainers:1.14.1"
+
+
 }
 
 test.classpath += configurations.developmentOnly

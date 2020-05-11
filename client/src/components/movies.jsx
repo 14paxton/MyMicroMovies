@@ -27,7 +27,7 @@ class Movies extends Component {
 
 
 
-        var x = fetch("http://localhost:8080/movies/hi")
+        var x = fetch("http://localhost:6969/movies/hi")
             .then(r => r.text())
             .catch(e => console.error(e))
 
