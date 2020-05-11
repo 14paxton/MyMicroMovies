@@ -1,4 +1,4 @@
-FROM openjdk:8u171-alpine3.7
-RUN apk --no-cache add curl
-COPY build/libs/*-all.jar server.jar
-CMD java ${JAVA_OPTS} -jar server.jar
+FROM adoptopenjdk/openjdk13-openj9:jdk-13.0.2_8_openj9-0.18.0-alpine-slim
+COPY build/libs/movies-*-all.jar movies.jar
+EXPOSE 8080
+CMD ["java", "-Dcom.sun.management.jmxremote", "-Xmx128m", "-XX:+IdleTuningGcOnIdle", "-Xtune:virtualized", "-jar", "movies.jar"]

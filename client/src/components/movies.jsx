@@ -24,10 +24,18 @@ class Movies extends Component {
     };
 
     async componentDidMount() {
-        const {data: genresList} = await getGenres();
-        const {data: movies} = await getMovies();
-        const genres = [{_id: "", name: " All Genres"}, ...genresList];
-        this.setState({movies, genres})
+
+
+
+        var x = fetch("http://localhost:8080/movies/hi")
+            .then(r => r.text())
+            .catch(e => console.error(e))
+
+        console.log(await x);
+        // const {data: genresList} = await getGenres();
+        // const {data: movies} = await getMovies();
+        // const genres = [{_id: "", name: " All Genres"}, ...genresList];
+        // this.setState({movies, genres})
     }
 
     handleDelete = async (movie) => {

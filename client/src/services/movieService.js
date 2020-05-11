@@ -8,7 +8,10 @@ function movieUrl(id) {
 }
 
 export function getMovies() {
-    return http.get(apiEndpoint);
+    // var x = http.get("http://localhost:8080/movies/hi");
+    console.log("getsome");
+    // console.log(x);
+    // return http.get(apiEndpoint);
 }
 
 export function getMovie(movieId) {
