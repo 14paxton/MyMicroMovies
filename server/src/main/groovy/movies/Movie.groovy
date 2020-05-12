@@ -12,15 +12,6 @@ import org.bson.types.ObjectId
  Integer dailyRentalRate
 
 
-//     Movie(){}
-//
-//     Movie(title, genre, numberInStock, dailyRentalRate){
-//        this.title = title
-//        this.genre = genre
-//        this.numberInStock = numberInStock
-//        this.dailyRentalRate = dailyRentalRate
-//    }
-//
 //     @Override
 //     String toString(){
 //         return """Movie{
