@@ -27,7 +27,9 @@ public class MoviesController {
     @Transactional
     HttpResponse<String> hello(String name) {
 
-        new Movie(title: "Robocop", genre: "scifi", numberInStock: 6, dailyRentalRate: "1").save(flush: true)
+//        mongoClient.getDatabase('vidly').getCollection('movies')
+
+//        new Movie(title: "Robocop", genre: "scifi", numberInStock: 6, dailyRentalRate: "1").save(flush: true)
 
         return HttpResponse.ok("hello" + name);
     }
