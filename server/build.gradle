@@ -27,7 +27,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-groovy"
     compileOnly "io.micronaut:micronaut-inject-java"
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
-    implementation "io.micronaut.configuration:micronaut-mongo-reactive:$micronautMongoVersion"
+    implementation "io.micronaut.configuration:micronaut-mongo-reactive"
     implementation "io.micronaut:micronaut-runtime-groovy"
     implementation "io.micronaut:micronaut-validation"
     implementation "io.micronaut:micronaut-http-client"
