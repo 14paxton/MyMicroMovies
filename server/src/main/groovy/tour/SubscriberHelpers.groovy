@@ -11,6 +11,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
+import org.bson.Document;
+import io.reactivex.subscribers.*
 
 /**
  *  Subscriber helper implementations for the Quick Tour.

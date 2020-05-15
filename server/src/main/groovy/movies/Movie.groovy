@@ -1,11 +1,11 @@
 package movies
 import grails.gorm.annotation.Entity
-import org.bson.types.ObjectId
+//import org.bson.types.ObjectId
 
 @Entity
  class Movie {
 
- ObjectId id
+ String id
  String title
  String genre
  Integer numberInStock
