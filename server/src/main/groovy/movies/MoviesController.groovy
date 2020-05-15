@@ -6,9 +6,12 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection
 import com.mongodb.reactivestreams.client.Success;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MediaType;
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Header
+import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces
 import grails.gorm.transactions.Transactional
 import com.mongodb.client.FindIterable
@@ -51,20 +54,31 @@ public class MoviesController {
 
 
 
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_JSON)
     @Get("/delete/{id}")
-    @Transactional
     HttpResponse<String> delete(String id) {
 //        ObservableSubscriber<DeleteResult> subscriber = new ObservableSubscriber<DeleteResult>()
 //        getMovieCollection().deleteOne(eq('_id', id))
 //                .subscribe(subscriber)
 //        def x = subscriber.await()
+        def tempID = Movie.first().id
         ObservableSubscriber<DeleteResult> subscriber = new ObservableSubscriber<DeleteResult>()
-        getMovieCollection().deleteOne(eq('_id', id))
+        getMovieCollection().deleteOne(eq('_id', tempID))
                 .subscribe(subscriber)
-        def x = subscriber.await().getReceived()
-        return x
+        def deleteResult = subscriber.await().getReceived().first()
+        if(deleteResult.getDeletedCount() < 1)
+        {
+            return HttpResponse.notFound('{false}')
+        }
 
+        return HttpResponse.ok('{true}')
+
+    }
+
+    @Post(value = "/save", consumes = MediaType.APPLICATION_JSON)
+    //{title: "adsfadsfasd", genreId: "", numberInStock: "4", dailyRentalRate: "4"}
+     HttpResponse saveMovie(@Body String data) {
+        return HttpResponse.ok();
     }
 
 
@@ -75,7 +89,11 @@ public class MoviesController {
                 .getCollection("movie", Movie.class)
     }
 
-//    @Produces(MediaType.TEXT_PLAIN)
+
+
+
+
+    //    @Produces(MediaType.TEXT_PLAIN)
 //    @Get("/{name}")
 //    @Transactional
 //    HttpResponse<String> hello(String name) {

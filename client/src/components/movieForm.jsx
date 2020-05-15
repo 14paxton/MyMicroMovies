@@ -22,7 +22,6 @@ class MovieForm extends Form {
             .required()
             .label("Title"),
         genreId: Joi.string()
-            .required()
             .label("Genre"),
         numberInStock: Joi.number()
             .required()
@@ -71,6 +70,7 @@ class MovieForm extends Form {
     }
 
     doSubmit = async () => {
+        console.log("here")
         await saveMovie(this.state.data);
 
         this.props.history.push("/movies");
