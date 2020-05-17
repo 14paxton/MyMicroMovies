@@ -1,5 +1,12 @@
 package movies
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.mongodb.util.JSON
+import io.micronaut.http.annotation.Delete
+import org.bson.types.ObjectId
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.reactivestreams.client.FindPublisher
 import com.mongodb.reactivestreams.client.MongoClient;
@@ -15,6 +22,7 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces
 import grails.gorm.transactions.Transactional
 import com.mongodb.client.FindIterable
+import io.micronaut.http.annotation.Put
 import io.reactivex.subscribers.TestSubscriber
 import org.bson.Document
 import org.reactivestreams.Subscriber
@@ -22,12 +30,13 @@ import org.reactivestreams.Subscriber
 import static com.mongodb.client.model.Filters.*
 import io.reactivex.*
 
-import static tour.SubscriberHelpers.ObservableSubscriber
-import static tour.SubscriberHelpers.PrintSubscriber
+import static RxJavaHelpers.SubscriberHelpers.ObservableSubscriber
+import static RxJavaHelpers.SubscriberHelpers.PrintSubscriber
 
 
 @Controller("/movies")
 public class MoviesController {
+//    private static final Logger LOG = LoggerFactory.getLogger("movies")
 
     private final MongoClient mongoClient
 
@@ -44,10 +53,11 @@ public class MoviesController {
     }
 
     @Produces(MediaType.APPLICATION_JSON )
-    @Get("/find/{id}")
-    Movie movie(String id) {
+    @Get("/{id}")
+    Movie find(String id) {
+        def objId = new ObjectId(id)
         ObservableSubscriber<Movie> subscriber = new ObservableSubscriber<Movie>()
-        getMovieCollection().find(eq('_id', id)).subscribe(subscriber)
+        getMovieCollection().find(eq('_id', objId)).subscribe(subscriber)
         subscriber.await().received[0]
 
     }
@@ -55,12 +65,8 @@ public class MoviesController {
 
 
     @Produces(MediaType.TEXT_JSON)
-    @Get("/delete/{id}")
+    @Delete("/{id}")
     HttpResponse<String> delete(String id) {
-//        ObservableSubscriber<DeleteResult> subscriber = new ObservableSubscriber<DeleteResult>()
-//        getMovieCollection().deleteOne(eq('_id', id))
-//                .subscribe(subscriber)
-//        def x = subscriber.await()
         def tempID = Movie.first().id
         ObservableSubscriber<DeleteResult> subscriber = new ObservableSubscriber<DeleteResult>()
         getMovieCollection().deleteOne(eq('_id', tempID))
@@ -75,10 +81,33 @@ public class MoviesController {
 
     }
 
-    @Post(value = "/save", consumes = MediaType.APPLICATION_JSON)
-    //{title: "adsfadsfasd", genreId: "", numberInStock: "4", dailyRentalRate: "4"}
-     HttpResponse saveMovie(@Body String data) {
+    @Put(value = "/", consumes = MediaType.APPLICATION_JSON)
+     HttpResponse update(@Body String data) {
         return HttpResponse.ok();
+    }
+
+    @Post(value = "/", consumes = MediaType.APPLICATION_JSON)
+    @Transactional
+    HttpResponse save(@Body Movie data) {
+
+        def col =  mongoClient
+                .getDatabase("vidly")
+                .getCollection("movie")
+
+        Document newMovie = new Document()
+                .append("title", data.title)
+                .append("genre", data.genre)
+                .append("numberInStock", data.numberInStock)
+                .append("dailyRentalRat", data.dailyRentalRate)
+
+
+        ObservableSubscriber<Success> subscriber = new ObservableSubscriber<Success>()
+        getMovieCollection().insertOne(newMovie ).subscribe(subscriber)
+//        col.insertOne(doc).subscribe(subscriber)
+        subscriber.await()
+
+        return HttpResponse.ok('{true}')
+
     }
 
 
@@ -88,6 +117,8 @@ public class MoviesController {
                 .getDatabase("vidly")
                 .getCollection("movie", Movie.class)
     }
+
+
 
 
 

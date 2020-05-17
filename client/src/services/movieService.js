@@ -13,18 +13,18 @@ export function getMovies() {
 }
 
 export function getMovie(movieId) {
+    console.log(movieId)
     return http.get(movieUrl(movieId));
 }
 
 export function saveMovie(movie) {
-    console.log(movie)
-    if (movie._id) {
+    if (movie.id) {
         const body = { ...movie };
         delete body._id;
-        return http.put(movieUrl(movie._id), body);
+        return http.put(movieUrl(movie.id), body);
     }
 
-    return http.post(microEndpoint+'/save', movie);
+    return http.post(microEndpoint, movie);
 }
 
 export function deleteMovie(movieId) {

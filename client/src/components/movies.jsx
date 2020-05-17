@@ -26,18 +26,18 @@ class Movies extends Component {
     async componentDidMount() {
 
         const {data: movies} = await getMovies();
-        console.log(movies)
+        console.log(movies[0].id)
         // const genres = [{_id: "", name: " All Genres"}, ...genresList];
         this.setState({movies})
     }
 
     handleDelete = async (movie) => {
         const originalMovies = this.state.movies;
-        const movies = originalMovies.filter(m => m._id !== movie._id);
+        const movies = originalMovies.filter(m => m.id !== movie.id);
         this.setState({movies})
 
         try {
-            await deleteMovie(movie._id);
+            await deleteMovie(movie.id);
         } catch (ex) {
             if (ex.response && ex.response.status === 404) console.log("x");
             toast.error("This movie has already been deleted.");

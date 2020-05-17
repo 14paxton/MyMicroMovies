@@ -1,18 +1,14 @@
-package tour;
+package RxJavaHelpers;
 
-import com.mongodb.MongoTimeoutException;
-import org.bson.Document;
+import com.mongodb.MongoTimeoutException
 import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
+import org.reactivestreams.Subscription
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
-import org.bson.Document;
-import io.reactivex.subscribers.*
+import org.bson.Document
 
 /**
  *  Subscriber helper implementations for the Quick Tour.
