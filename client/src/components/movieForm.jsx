@@ -8,7 +8,7 @@ class MovieForm extends Form {
     state = {
         data: {
             title: "",
-            genreId: "",
+            genre: "",
             numberInStock: "",
             dailyRentalRate: ""
         },
@@ -17,11 +17,12 @@ class MovieForm extends Form {
     };
 
     schema = {
-        _id: Joi.string(),
+        id: Joi.string(),
         title: Joi.string()
             .required()
             .label("Title"),
-        genreId: Joi.string()
+        genre: Joi.string()
+            .required()
             .label("Genre"),
         numberInStock: Joi.number()
             .required()
@@ -44,7 +45,6 @@ class MovieForm extends Form {
         try {
             const movieId = this.props.match.params.id;
             if (movieId === "new") return;
-            console.log("here" + movieId)
             const {data: movie} = await getMovie(movieId);
             this.setState({data: this.mapToViewModel(movie)});
 
@@ -55,23 +55,22 @@ class MovieForm extends Form {
     }
 
     async componentDidMount() {
-        // await this.populateGenres();
+        await this.populateGenres();
 
         await this.populateMovies();
     }
 
     mapToViewModel(movie) {
         return {
-            _id: movie.id,
+            id: movie.id,
             title: movie.title,
-            genreId: movie.genre._id,
+            genre: movie.genre,
             numberInStock: movie.numberInStock,
             dailyRentalRate: movie.dailyRentalRate
         };
     }
 
     doSubmit = async () => {
-        console.log("here")
         await saveMovie(this.state.data);
 
         this.props.history.push("/movies");
@@ -83,7 +82,7 @@ class MovieForm extends Form {
                 <h1>Movie Form</h1>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("title", "Title")}
-                    {this.renderSelect("genreId", "Genre", this.state.genres)}
+                    {this.renderSelect("genre", "Genre", this.state.genres)}
                     {this.renderInput("numberInStock", "Number in Stock", "number")}
                     {this.renderInput("dailyRentalRate", "Rate")}
                     {this.renderButton("Save")}

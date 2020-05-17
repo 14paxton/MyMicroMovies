@@ -2,7 +2,6 @@ package movies
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
-import com.sun.xml.internal.ws.developer.Serialization
 import grails.gorm.annotation.Entity
 import org.bson.types.ObjectId
 
@@ -15,8 +14,10 @@ import javax.persistence.Id
     @JsonSerialize(using = ToStringSerializer)
     ObjectId id
 
+    @JsonSerialize(using = ToStringSerializer)
+    ObjectId genre
+
     String title
-    String genre
     Long numberInStock
     Long dailyRentalRate
 

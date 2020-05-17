@@ -24,11 +24,10 @@ class Movies extends Component {
     };
 
     async componentDidMount() {
-
+        const {data: genresList} = await getGenres();
         const {data: movies} = await getMovies();
-        console.log(movies[0].id)
-        // const genres = [{_id: "", name: " All Genres"}, ...genresList];
-        this.setState({movies})
+        const genres = [{id: "", name: " All Genres"}, ...genresList];
+        this.setState({movies, genres})
     }
 
     handleDelete = async (movie) => {
@@ -86,8 +85,8 @@ class Movies extends Component {
             filtered = allMovies.filter(m =>
                 m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
             );
-        else if (selectedGenre && selectedGenre._id)
-            filtered = allMovies.filter(m => m.genre._id === selectedGenre._id);
+        else if (selectedGenre && selectedGenre.id)
+            filtered = allMovies.filter(m => m.genre === selectedGenre.id);
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
         const movies = paginate(sorted, currentPage, pageSize);
 
