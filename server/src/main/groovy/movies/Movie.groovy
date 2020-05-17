@@ -8,7 +8,7 @@ import org.bson.types.ObjectId
 import javax.persistence.Id
 
 @Entity
- class Movie implements  Serializable{
+ class Movie{
 
     @Id
     @JsonSerialize(using = ToStringSerializer)

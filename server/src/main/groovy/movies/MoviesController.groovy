@@ -31,6 +31,8 @@ public class MoviesController {
         this.mongoClient = mongoClient;
     }
 
+
+
     @Produces(MediaType.APPLICATION_JSON )
     @Get("/")
     List<Movie> allMovies() {
